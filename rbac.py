@@ -19,7 +19,7 @@ BASE_API_URL = "https://%s" % API_SERVER
 DEFAULT_SCOPE = "basic ancestry"
 
 app = flask.Flask(__name__, instance_relative_config=True)
-app.config.from_pyfile('rbac.cfg', silent=False)
+app.config.from_pyfile('rbac.cfg', silent=True)
 
 def load_config(key):
     if not key in app.config:
