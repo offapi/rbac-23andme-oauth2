@@ -72,8 +72,12 @@ def receive_code():
                 match_total = ancestor_match_pct()
                 valid = match_total >= allowed_population_threshold
                 return flask.render_template('auth_status.html', valid=valid,match_total=match_total*100)
-
-        return "Error: could not locate any valid profiles with ancestry data"
+            else:
+                return "Error: no genotyped profiles found on your account"
+        else:
+            return "Error: could not locate any valid profiles with ancestry data"
+    else:
+        return "Error fetching OAuth2 access bearer token"
 
 def api_req(token, path, params):
     headers = {'Authorization': 'Bearer %s' % token}
