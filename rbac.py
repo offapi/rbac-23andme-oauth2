@@ -6,13 +6,15 @@ import requests
 import flask
 import os
 import sys
+import json
 from flask import request, config
-# import urllib3.contrib.pyopenssl
-# urllib3.contrib.pyopenssl.inject_into_urllib3()
 
-ancestry_threshold = 0.75  # standard ancestry speculation
-
-# app.config.from_object('yourapplication.default_settings')
+allowed_population_threshold = 0.51    # minimum allowed match %
+ancestry_speculation_threshold = 0.75  # standard ancestry speculation
+ancestry_allowed_populations = [ 'French & German', 'British & Irish', 'Finnish', 
+    'Scandinavian', 'Northern European', 'Eastern European', 'Balkan', 'Iberian', 
+    'Italian', 'Sardinian', 'Southern European' ]
+# note: does not include "Ashkenazi" or "European"
 
 API_SERVER = "api.23andme.com"
 BASE_API_URL = "https://%s" % API_SERVER
@@ -33,11 +35,19 @@ def load_config(key):
 CLIENT_ID=load_config('CLIENT_ID')
 CLIENT_SECRET=load_config('CLIENT_SECRET')
 REDIRECT_URI=load_config('REDIRECT_URI')
-DEBUG=True #os.getenv('DEBUG')
+DEBUG=os.getenv('DEBUG')
 
 @app.route('/')
 def index():
     return flask.render_template('index.html', client_id = CLIENT_ID)
+
+@app.route('/a')
+def a():
+    return flask.render_template('auth_status.html', valid=True,match_total=65.1)
+@app.route('/b')
+def b():
+    return flask.render_template('auth_status.html', valid=False,match_total=65.1)
+
 
 @app.route('/receive_code/')
 def receive_code():
@@ -60,14 +70,13 @@ def receive_code():
         # fetch profile ids
         user_res = api_req(access_token, "/user/", {})
         profiles = user_res.json()['profiles']
-        print "profiles: %s" % profiles
-        print user_res.text
         if len(profiles):
-            print "got profiles!"
-            profile_id = profiles[0]['id']
-            ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_threshold})
-            print ancestry_res.text
-            return flask.render_template('receive_code.html', res = ancestry_response.text)
+            profile_id = profiles[0]['id'] # assume first profile
+            ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_speculation_threshold})
+            ancestry = ancestry_res.json()['ancestry']
+            match_total = ancestor_match_pct()
+            valid = match_total >= allowed_population_threshold
+            return flask.render_template('auth_status.html', valid=valid,match_total=match_total*100)
 
 def api_req(token, path, params):
     headers = {'Authorization': 'Bearer %s' % token}
@@ -75,13 +84,29 @@ def api_req(token, path, params):
                                      params = params,
                                      headers= headers,
                                      verify = False)
-    print res.text
     if res.status_code == 200:
         return res
     else:
         reponse_text = res.text
         print "API error to %s: %s" % (path, reponse_text)
-        res.raise_for_status()        
+        res.raise_for_status()  
+
+# returns percentage of allowed ancestor geographies
+def ancestor_match_pct(ancestry, total=0.0):
+    # see if we match a desired pop, if so add it to total
+    if 'label' in ancestry:
+        if ancestry['label'] in ancestry_allowed_populations:
+            proportion = ancestry['proportion']
+            return proportion
+
+    # if no desired pop, recurse into sub-populations
+    if 'sub_populations' in ancestry:
+        subtotal = 0.0
+        for subpop in ancestry['sub_populations']:
+            subtotal += ancestor_match_pct(subpop, total)
+        return subtotal
+
+    return total
 
 if __name__ == '__main__':
     app.run(debug=DEBUG)

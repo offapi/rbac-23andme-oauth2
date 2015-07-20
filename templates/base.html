@@ -6,20 +6,26 @@
     <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.css">
     <link rel="stylesheet" href="https://bootswatch.com/assets/css/bootswatch.min.css">
     <script src="https://api.23andme.com/res/js/ttam-0.3.js"></script>
+    <meta name="description" content="OAPI - Offensive Application Programming Initative - Access Control" />
+    <meta name="keywords" content="oapi, rbac, access control, open source" />
   </head>
   <body>
 
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand">OAPI</a>
+          <a href="/" class="navbar-brand">
+            <span class="glyphicon glyphicon-asterisk"></span> OAPI:
+            Offensive Application Programming Initiative
+          </a>
         </div>
       </div>
     </div>
 
-
-    {% block body %}
-    {% endblock %}
+    <div class="container">
+      {% block body %}
+      {% endblock %}
+    </div>
 
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

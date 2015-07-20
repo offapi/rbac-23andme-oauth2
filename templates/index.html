@@ -2,10 +2,28 @@
 {% block body %}
 
     <h1>
-      Race-Based Access Control
+      <span class="glyphicon glyphicon-link"></span>
+      Genetic Access Control
     </h1>
 
     <div class="well">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>
+            This is a proof of concept demonstrating the ability to restrict access to a website
+            via genetic profiling using the standard ancestry composition speculation
+            capabilities of the 23andme API.
+          </p>
+          <p>
+            Authentication is performed via OAuth2. Note that this is a trial application
+            and has not been approved yet by 23andme so there are a limited number of users
+            that can test its functionality.
+          </p>
+          <p>
+            More information can be found at <a href="https://github.com/offapi/rbac-23andme-oauth2">GitHub</a>.
+          </p>
+        </div>
+      </div>
       <h2>Authenticate:</h2>
       <div id="ttam-auth-button"></div>
     </div>
