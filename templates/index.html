@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <h1>
+      Race-Based Access Control
+    </h1>
+
+    <div class="well">
+      <h2>Authenticate:</h2>
+      <div id="ttam-auth-button"></div>
+    </div>
+
+    <footer>
+      Notice: this site is in no way affiliated with nor endorsed by 23andme.
+    </footer>
+
+    <script>
+      window.onload = function () {
+        var ttam = TTAM('{{ client_id }}');
+        ttam.connectButton('ttam-auth-button', [ "ancestry" ]);
+      };
+    </script>
+
+{% endblock %}
