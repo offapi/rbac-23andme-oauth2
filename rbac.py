@@ -70,16 +70,19 @@ def receive_code():
 
 def api_req(token, path, params):
     headers = {'Authorization': 'Bearer %s' % token}
-    ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1%s" % path), # /profileid
+    print "requesting %s" % path
+    res = requests.get("%s%s" % (BASE_API_URL, "1%s" % path), # /profileid
                                      params = params,
                                      headers= headers,
                                      verify = False)
-    if ancestry_response.status_code == 200:
-        return flask.render_template('receive_code.html', res = ancestry_response.text)
+    print res.text
+    if res.status_code == 200:
+        return flask.render_template('receive_code.html', res = res.text)
     else:
-        reponse_text = ancestry_response.text
+        reponse_text = res.text
         print "API error to %s: %s" % (path, reponse_text)
         response.raise_for_status()
+    return res
         
 
 if __name__ == '__main__':
