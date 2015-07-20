@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h1>Authorization Status:</h1>
+
+<h2>
+    {% if valid %}
+        <span class="glyphicon glyphicon-ok-sign"></span>
+        Valid!
+    {% else %}
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        Invalid!     
+    {% endif %}
+
+    You are {{ match_total }}% of the permitted European ancestry.
+</h2>
+
+{% endblock %}
