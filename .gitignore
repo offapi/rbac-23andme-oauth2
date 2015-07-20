@@ -3,3 +3,4 @@ local/
 include/
 lib/
 *.Python
+/instance

@@ -46,7 +46,7 @@ def a():
     return flask.render_template('auth_status.html', valid=True,match_total=65.1)
 @app.route('/b')
 def b():
-    return flask.render_template('auth_status.html', valid=False,match_total=65.1)
+    return flask.render_template('auth_status.html', valid=False,match_total=22.72)
 
 
 @app.route('/receive_code/')
