@@ -62,16 +62,14 @@ def receive_code():
         # fetch profile ids
         user_res = api_req(access_token, "/user/", {})
         profiles = user_res.json()['profiles']
-        print "profiles: %s" % profiles
         if len(profiles):
             profiles = [p for p in profiles if p['genotyped']]
-            print "profiles2: %s" % profiles
             if len(profiles):
                 profile_id = profiles[0]['id'] # assume first genotyped profile
                 ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_speculation_threshold})
                 ancestry = ancestry_res.json()['ancestry']
                 # check if ancestry is valid
-                match_total = ancestor_match_pct()
+                match_total = ancestor_match_pct(ancestry)
                 valid = match_total >= allowed_population_threshold
                 return flask.render_template('auth_status.html', valid=valid,match_total=match_total*100)
             else:
