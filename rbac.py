@@ -7,8 +7,8 @@ import flask
 import os
 import sys
 from flask import request, config
-import urllib3.contrib.pyopenssl
-urllib3.contrib.pyopenssl.inject_into_urllib3()
+# import urllib3.contrib.pyopenssl
+# urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 ancestry_threshold = 0.75  # standard ancestry speculation
 
