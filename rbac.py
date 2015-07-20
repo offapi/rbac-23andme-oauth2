@@ -71,12 +71,17 @@ def receive_code():
         user_res = api_req(access_token, "/user/", {})
         profiles = user_res.json()['profiles']
         if len(profiles):
-            profile_id = profiles[0]['id'] # assume first profile
-            ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_speculation_threshold})
-            ancestry = ancestry_res.json()['ancestry']
-            match_total = ancestor_match_pct()
-            valid = match_total >= allowed_population_threshold
-            return flask.render_template('auth_status.html', valid=valid,match_total=match_total*100)
+            profiles = [p for p in profiles if p.genotyped]
+            if len(profiles):
+                profile_id = profiles[0]['id'] # assume first genotyped profile
+                ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_speculation_threshold})
+                ancestry = ancestry_res.json()['ancestry']
+                # check if ancestry is valid
+                match_total = ancestor_match_pct()
+                valid = match_total >= allowed_population_threshold
+                return flask.render_template('auth_status.html', valid=valid,match_total=match_total*100)
+
+        return "Error: could not locate any valid profiles with ancestry data"
 
 def api_req(token, path, params):
     headers = {'Authorization': 'Bearer %s' % token}
