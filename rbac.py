@@ -69,7 +69,7 @@ def receive_code():
             reponse_text = ancestry_response.text
             response.raise_for_status()
     else:
-        print "error %s" response.text
+        print "error %s" % response.text
         response.raise_for_status()
 
 
