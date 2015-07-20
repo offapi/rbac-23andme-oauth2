@@ -39,15 +39,7 @@ DEBUG=os.getenv('DEBUG')
 
 @app.route('/')
 def index():
-    return flask.render_template('index.html', client_id = CLIENT_ID)
-
-@app.route('/a')
-def a():
-    return flask.render_template('auth_status.html', valid=True,match_total=65.1)
-@app.route('/b')
-def b():
-    return flask.render_template('auth_status.html', valid=False,match_total=22.72)
-
+    return flask.render_template('index.html', client_id=CLIENT_ID)
 
 @app.route('/receive_code/')
 def receive_code():
