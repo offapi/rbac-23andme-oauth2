@@ -77,13 +77,11 @@ def api_req(token, path, params):
                                      verify = False)
     print res.text
     if res.status_code == 200:
-        return flask.render_template('receive_code.html', res = res.text)
+        return res
     else:
         reponse_text = res.text
         print "API error to %s: %s" % (path, reponse_text)
-        response.raise_for_status()
-    return res
-        
+        res.raise_for_status()        
 
 if __name__ == '__main__':
     app.run(debug=DEBUG)
