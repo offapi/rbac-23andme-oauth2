@@ -4,6 +4,7 @@
 
 import requests
 import flask
+import os
 from flask import request, config
 
 ancestry_threshold = 0.75  # standard ancestry speculation
@@ -20,6 +21,9 @@ app.config.from_pyfile('rbac.cfg', silent=False)
 # required config
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
+if not 'REDIRECT_URI' in app.config:
+    app.config['REDIRECT_URI'] = os.getenv('REDIRECT_URI')
+REDIRECT_URI = app.config['REDIRECT_URI']
 
 @app.route('/')
 def index():
