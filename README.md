@@ -3,9 +3,9 @@
 
 ## What is Genetic Access Control?
 
-Using the (23andme API)[https://api.23andme.com/docs/reference/] it is now possible to
+Using the [23andme API](https://api.23andme.com/docs/reference/) it is now possible to
 utilize genetic profile information and likely phenotypes in custom applications.  This
-means you can now restrict access to your site based on traits including sex, ancestry,
+means you can restrict access to your site based on traits including sex, ancestry,
 disease susceptability, and arbitrary characteristics associated with
 single-nucleotide polymorphisms (SNPs) in a person's genotype.
 
