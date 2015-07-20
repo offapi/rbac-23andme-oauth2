@@ -31,7 +31,7 @@ def load_config(key):
 CLIENT_ID=load_config('CLIENT_ID')
 CLIENT_SECRET=load_config('CLIENT_SECRET')
 REDIRECT_URI=load_config('REDIRECT_URI')
-DEBUG=os.getenv('DEBUG')
+DEBUG=True #os.getenv('DEBUG')
 
 @app.route('/')
 def index():
