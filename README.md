@@ -29,9 +29,9 @@ can congregate, such as a female-only community
 restricting access to Ashkenazi or Sephardic maternal haplogroups with the "Cohen" gene
 * Safer online dating sites that only partner people with a low likelihood of offspring 
 with two recessive genes for congenital diseases
-* Pharmacutical applications that check for genetic predisposition to negative drug 
+* Pharmaceutical applications that check for genetic predisposition to negative drug 
 interactions before dispensing
-* Ethnic enclaves, e.g. Black Panthers or NAACP members
+* Groups defined by ethnic background, e.g. Black Panthers or NAACP members
 
 
 ## Flaws
