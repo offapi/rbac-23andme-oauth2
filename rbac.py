@@ -58,8 +58,10 @@ def receive_code():
         access_token = response.json()['access_token']
         #print "Access token: %s\n" % (access_token)
 
+        ## NEED TO FETCH PROFILE ID
+
         headers = {'Authorization': 'Bearer %s' % access_token}
-        ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1/ancestry/"),
+        ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1/ancestry/"), # /profileid
                                          params = {'threshold': ancestry_threshold},
                                          headers= headers,
                                          verify = False)
@@ -67,6 +69,7 @@ def receive_code():
             return flask.render_template('receive_code.html', res = ancestry_response.text)
         else:
             reponse_text = ancestry_response.text
+            print "error %s" % reponse_text
             response.raise_for_status()
     else:
         print "error %s" % response.text
