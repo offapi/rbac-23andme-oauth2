@@ -1,17 +1,5 @@
 {% extends "base.html" %}
 {% block body %}
 <h1> Success! </h1>
-<p>You've retrieved the following genotypes from the api</p>
-<table>
-    <tr>
-        <th scope='col'>profile id</th>
-        <th scope='col'>rs12913832</th>
-    </tr>
-    {% for p in response_json %}
-    <tr>
-        <td>{{p.id}}</td>
-        <td>{{p.rs12913832}}</td>
-    </tr>
-    {% endfor %}
-</table>
+{{ res }}
 {% endblock %}

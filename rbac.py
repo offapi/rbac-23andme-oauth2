@@ -10,11 +10,8 @@ ancestry_threshold = 0.75  # standard ancestry speculation
 
 # app.config.from_object('yourapplication.default_settings')
 
-PORT = 5000
 API_SERVER = "api.23andme.com"
 BASE_API_URL = "https://%s/" % API_SERVER
-BASE_CLIENT_URL = 'http://localhost:%s/'% PORT
-REDIRECT_URI = '%sreceive_code/'  % BASE_CLIENT_URL
 DEFAULT_SCOPE = "ancestry"
 
 app = flask.Flask(__name__, instance_relative_config=True)
@@ -56,7 +53,7 @@ def receive_code():
                                          headers= headers,
                                          verify = False)
         if ancestry_response.status_code == 200:
-            return flask.render_template('receive_code.html', response_json = ancestry_response.json())
+            return flask.render_template('receive_code.html', res = ancestry_response.body)
         else:
             reponse_text = ancestry_response.text
             response.raise_for_status()
@@ -65,4 +62,4 @@ def receive_code():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=PORT)
+    app.run(debug=False)
