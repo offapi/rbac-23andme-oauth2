@@ -49,11 +49,13 @@ def receive_code():
         'redirect_uri': REDIRECT_URI,
         'scope': DEFAULT_SCOPE
     }
+    print "fetching token id: %s" % CLIENT_ID
     response = requests.post(
         "%s%s" % (BASE_API_URL, "token/"),
         data = parameters,
         verify = False
     )
+    print "response: %s" % response
 
     if response.status_code == 200:
         access_token = response.json()['access_token']
@@ -86,4 +88,4 @@ def api_req(token, path, params):
         
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=DEBUG)
