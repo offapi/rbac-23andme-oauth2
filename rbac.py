@@ -5,6 +5,7 @@
 import requests
 import flask
 import os
+import sys
 from flask import request, config
 
 ancestry_threshold = 0.75  # standard ancestry speculation
@@ -18,12 +19,18 @@ DEFAULT_SCOPE = "ancestry"
 app = flask.Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('rbac.cfg', silent=False)
 
+def load_config(key):
+    if not key in app.config:
+        app.config[key] = os.getenv(key)
+    if not app.config[key]:
+        print "Config %s missing" % key
+        sys.exit(1)
+    return app.config[key]
+
 # required config
-CLIENT_ID = app.config['CLIENT_ID']
-CLIENT_SECRET = app.config['CLIENT_SECRET']
-if not 'REDIRECT_URI' in app.config:
-    app.config['REDIRECT_URI'] = os.getenv('REDIRECT_URI')
-REDIRECT_URI = app.config['REDIRECT_URI']
+CLIENT_ID=load_config('CLIENT_ID')
+CLIENT_SECRET=load_config('CLIENT_SECRET')
+REDIRECT_URI=load_config('REDIRECT_URI')
 
 @app.route('/')
 def index():
