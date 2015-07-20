@@ -54,14 +54,14 @@ def receive_code():
         data = parameters,
         verify = False
     )
-    print "response: %s" % response.text
 
     if response.status_code == 200:
         access_token = response.json()['access_token']
-        # fetch profile id
-        profile_res = api_req(access_token, "/user/", {})
-        profiles = profile_res.json()['profiles']
-        print profile_res.text
+        # fetch profile ids
+        user_res = api_req(access_token, "/user/", {})
+        profiles = user_res.json()['profiles']
+        print "profiles: %s" % profiles
+        print user_res.text
         if len(profiles):
             print "got profiles!"
             profile_id = profiles[0]['id']
@@ -71,7 +71,6 @@ def receive_code():
 
 def api_req(token, path, params):
     headers = {'Authorization': 'Bearer %s' % token}
-    print "requesting %s" % path
     res = requests.get("%s/1%s" % (BASE_API_URL, path), # /profileid
                                      params = params,
                                      headers= headers,
