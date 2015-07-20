@@ -7,6 +7,8 @@ import flask
 import os
 import sys
 from flask import request, config
+import urllib3.contrib.pyopenssl
+urllib3.contrib.pyopenssl.inject_into_urllib3()
 
 ancestry_threshold = 0.75  # standard ancestry speculation
 
@@ -14,7 +16,7 @@ ancestry_threshold = 0.75  # standard ancestry speculation
 
 API_SERVER = "api.23andme.com"
 BASE_API_URL = "https://%s/" % API_SERVER
-DEFAULT_SCOPE = "ancestry"
+DEFAULT_SCOPE = "ancestry basic"
 
 app = flask.Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('rbac.cfg', silent=False)
@@ -54,27 +56,31 @@ def receive_code():
     )
 
     if response.status_code == 200:
-        #print response.JSON
         access_token = response.json()['access_token']
-        #print "Access token: %s\n" % (access_token)
-
-        ## NEED TO FETCH PROFILE ID
-
-        headers = {'Authorization': 'Bearer %s' % access_token}
-        ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1/ancestry/"), # /profileid
-                                         params = {'threshold': ancestry_threshold},
-                                         headers= headers,
-                                         verify = False)
-        if ancestry_response.status_code == 200:
+        # fetch profile id
+        profile_res = api_req(access_token, "/user/", {})
+        profiles = profile_res.json()['profiles']
+        print profile_res.text
+        if len(profiles):
+            print "got profiles!"
+            profile_id = profiles[0]['id']
+            ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_threshold})
+            print ancestry_res.text
             return flask.render_template('receive_code.html', res = ancestry_response.text)
-        else:
-            reponse_text = ancestry_response.text
-            print "error %s" % reponse_text
-            response.raise_for_status()
-    else:
-        print "error %s" % response.text
-        response.raise_for_status()
 
+def api_req(token, path, params):
+    headers = {'Authorization': 'Bearer %s' % token}
+    ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1%s" % path), # /profileid
+                                     params = params,
+                                     headers= headers,
+                                     verify = False)
+    if ancestry_response.status_code == 200:
+        return flask.render_template('receive_code.html', res = ancestry_response.text)
+    else:
+        reponse_text = ancestry_response.text
+        print "API error to %s: %s" % (path, reponse_text)
+        response.raise_for_status()
+        
 
 if __name__ == '__main__':
     app.run(debug=DEBUG)
