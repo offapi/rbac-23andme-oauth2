@@ -31,6 +31,7 @@ def load_config(key):
 CLIENT_ID=load_config('CLIENT_ID')
 CLIENT_SECRET=load_config('CLIENT_SECRET')
 REDIRECT_URI=load_config('REDIRECT_URI')
+DEBUG=os.getenv('DEBUG')
 
 @app.route('/')
 def index():
@@ -73,4 +74,4 @@ def receive_code():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=DEBUG)
