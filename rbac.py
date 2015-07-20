@@ -16,7 +16,7 @@ ancestry_threshold = 0.75  # standard ancestry speculation
 
 API_SERVER = "api.23andme.com"
 BASE_API_URL = "https://%s/" % API_SERVER
-DEFAULT_SCOPE = "ancestry basic"
+DEFAULT_SCOPE = "basic ancestry"
 
 app = flask.Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('rbac.cfg', silent=False)
