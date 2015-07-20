@@ -53,7 +53,7 @@ def receive_code():
                                          headers= headers,
                                          verify = False)
         if ancestry_response.status_code == 200:
-            return flask.render_template('receive_code.html', res = ancestry_response.body)
+            return flask.render_template('receive_code.html', res = ancestry_response.text)
         else:
             reponse_text = ancestry_response.text
             response.raise_for_status()
