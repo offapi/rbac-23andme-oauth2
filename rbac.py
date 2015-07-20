@@ -57,7 +57,6 @@ def receive_code():
         #print response.JSON
         access_token = response.json()['access_token']
         #print "Access token: %s\n" % (access_token)
-        print response.json()
 
         headers = {'Authorization': 'Bearer %s' % access_token}
         ancestry_response = requests.get("%s%s" % (BASE_API_URL, "1/ancestry/"),
@@ -70,6 +69,7 @@ def receive_code():
             reponse_text = ancestry_response.text
             response.raise_for_status()
     else:
+        print "error %s" response.text
         response.raise_for_status()
 
 
