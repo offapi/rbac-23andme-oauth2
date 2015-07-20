@@ -62,8 +62,10 @@ def receive_code():
         # fetch profile ids
         user_res = api_req(access_token, "/user/", {})
         profiles = user_res.json()['profiles']
+        print "profiles: %s" % profiles
         if len(profiles):
-            profiles = [p for p in profiles if p.genotyped]
+            profiles = [p for p in profiles if p['genotyped']]
+            print "profiles2: %s" % profiles
             if len(profiles):
                 profile_id = profiles[0]['id'] # assume first genotyped profile
                 ancestry_res = api_req(access_token, "/ancestry/%s/" % profile_id, {'threshold': ancestry_speculation_threshold})
