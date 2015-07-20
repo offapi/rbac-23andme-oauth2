@@ -86,4 +86,4 @@ def api_req(token, path, params):
         
 
 if __name__ == '__main__':
-    app.run(debug=DEBUG)
+    app.run(debug=True)
